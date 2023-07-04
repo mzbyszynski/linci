@@ -1,5 +1,5 @@
 # linci
-Experiments in setting up a greenfield project that supports continuous integration from the beginning. 
+Experiments in setting up a greenfield project that supports continuous deployment from the beginning.
 
 ## Why
 Recently I've had the opportunity to work on some applications as they started or soon after they started. In all cases (in my experience) these applications started out great but hit a "sophomore slump" period where the weight of previous technical choices and just the cumulative code and data of a year or two of development left the application slow to develop, slow to deploy and very susceptible to regression errors. Moreover some choices that were fine when the application was new had led to cumbersome process. One example of this is the standard multi-environment setup: 
