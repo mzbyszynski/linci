@@ -1,31 +1,31 @@
 services:
-  uintordb:
+  lincidb:
     image: postgres:latest
     ports:
       - "${POSTGRES_PORT:-5432}"
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changem3}
-      POSTGRES_USER: ${POSTGRES_USER:-uintoruser}
-      POSTGRES_DB: ${POSTGRES_DB:-uintor}
-  uintordb-migrations:
+      POSTGRES_USER: ${POSTGRES_USER:-linciuser}
+      POSTGRES_DB: ${POSTGRES_DB:-linci}
+  lincidb-migrations:
     image: redgate/flyway
     volumes:
       - ./flyway/sql:/flyway/sql
     environment:
-      FLYWAY_URL: "jdbc:postgresql://${POSTGRES_HOST:-uintordb}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-uintor}?user=${POSTGRES_USER:-uintoruser}&password=${POSTGRES_PASSWORD:-changem3}"
+      FLYWAY_URL: "jdbc:postgresql://${POSTGRES_HOST:-lincidb}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-linci}?user=${POSTGRES_USER:-linciuser}&password=${POSTGRES_PASSWORD:-changem3}"
     depends_on:
-      - uintordb
+      - lincidb
     restart: on-failure
     command: migrate
   graphql:
-    image: uintor/graphql
+    image: linci/graphql
     ports:
       - "18080:8080"
     depends_on:
-      - uintordb-migrations
+      - lincidb-migrations
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changem3}
-      POSTGRES_USER: ${POSTGRES_USER:-uintoruser}
-      POSTGRES_HOST: ${POSTGRES_HOST:-uintordb}
+      POSTGRES_USER: ${POSTGRES_USER:-linciuser}
+      POSTGRES_HOST: ${POSTGRES_HOST:-lincidb}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
-      POSTGRES_DB: ${POSTGRES_DB:-uintor}
+      POSTGRES_DB: ${POSTGRES_DB:-linci}

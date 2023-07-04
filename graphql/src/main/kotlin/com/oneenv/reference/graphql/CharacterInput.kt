@@ -1,4 +1,4 @@
-package com.uintor.reference.graphql
+package com.linci.reference.graphql
 
 data class CharacterInput(
     val name: String

@@ -9,7 +9,7 @@ plugins {
 	kotlin("plugin.jpa") version "1.8.22"
 }
 
-group = "com.uintor.reference"
+group = "com.linci.reference"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -18,7 +18,7 @@ java {
 
 jib {
 	to {
-		image = "uintor/graphql"
+		image = "linci/graphql"
 	}
 }
 

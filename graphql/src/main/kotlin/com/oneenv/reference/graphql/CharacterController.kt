@@ -1,4 +1,4 @@
-package com.uintor.reference.graphql
+package com.linci.reference.graphql
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.graphql.data.method.annotation.Argument

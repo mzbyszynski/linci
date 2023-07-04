@@ -1,4 +1,4 @@
-# UINTOR
+# linci
 Experiments in setting up a greenfield project that supports continuous integration from the beginning. 
 
 ## Why

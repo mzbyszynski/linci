@@ -1,11 +1,11 @@
-package com.uintor.reference.graphql
+package com.linci.reference.graphql
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class uintorReferenceGraphQlServerApplication
+class linciReferenceGraphQlServerApplication
 
 fun main(args: Array<String>) {
-	runApplication<uintorReferenceGraphQlServerApplication>(*args)
+	runApplication<linciReferenceGraphQlServerApplication>(*args)
 }
