@@ -58,7 +58,7 @@ The reference application might also not _do_ that much since complex functional
 ## Local Development
 _WIP_, but here are some commands:
 
-Start GraphQL Server
+### Start GraphQL Server
 ```bash
 cd graphql
 # Builds the graphql container using jib
@@ -66,8 +66,9 @@ cd graphql
 cd ..
 docker compose up graphql
 ```
+Then go to http://localhost:18080/graphiql
 
-Stop everything and clean up
+### Stop everything and clean up
 ```bash
 docker compose down --remove-orphans -v
 ```

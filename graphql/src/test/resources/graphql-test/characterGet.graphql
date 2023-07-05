@@ -1,0 +1,6 @@
+query characterGet($id: ID) {
+    characterById(id: $id) {
+        id
+        name
+    }
+}

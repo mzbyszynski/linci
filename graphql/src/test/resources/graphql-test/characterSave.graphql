@@ -1,0 +1,6 @@
+mutation characterSave($name: String!) {
+    addCharacter(character: {name: $name}) {
+        id
+        name
+    }
+}
