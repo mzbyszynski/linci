@@ -38,7 +38,7 @@ The reference application might also not _do_ that much since complex functional
     - [x] Create local environment with docker compose
     - [x] Add Postgres and flyway for db migrations
     - [x] Add backend graphql server using Kotlin and Spring Boot
-    - [ ] Working POC of automated tests for graphql server
+    - [x] Working POC of automated tests for graphql server
     - [ ] Add some kind of OAuth implementation to authenticate with third party and store some unique user identifier.
     - [ ] Create frontend using parts of EPIC stack.
     - [ ] Implement integration tests that test the whole stack

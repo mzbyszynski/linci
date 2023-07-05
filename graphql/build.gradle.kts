@@ -7,6 +7,7 @@ plugins {
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
+	jacoco
 }
 
 group = "com.linci.reference"
@@ -15,6 +16,11 @@ version = "0.0.1-SNAPSHOT"
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
 }
+
+jacoco {
+	toolVersion = "0.8.10"
+}
+
 
 jib {
 	to {
@@ -58,4 +64,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.withType<JacocoReport> {
+	afterEvaluate {
+		classDirectories.setFrom(
+			files(classDirectories.files.map {
+				fileTree(it).apply {
+					exclude("**/GraphqlServerApplication**")
+				}
+			})
+		)
+	}
 }

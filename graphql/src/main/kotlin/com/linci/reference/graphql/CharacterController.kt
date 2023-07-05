@@ -9,11 +9,9 @@ import org.springframework.stereotype.Controller
 import java.util.*
 
 @Controller
-class CharacterController {
-
-    @Autowired
-    lateinit var repository: CharacterRepository
-
+class CharacterController(
+    val repository: CharacterRepository
+) {
     @QueryMapping
     fun characterById(@Argument id: String): Character? {
         val longId = id.toLongOrNull()
