@@ -10,5 +10,5 @@ data class Character(
     val name: String
 ) {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0
+     val id: Long = 0
 }
