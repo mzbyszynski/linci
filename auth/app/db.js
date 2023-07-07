@@ -13,7 +13,7 @@ const getUserSql = `
 
 export const getUser = async ({ email, password }) => {
   const { rows } = await pool.query(getUserSql, [email, password]);
-  if (rows.length > 0) {
+  if (rows && rows.length > 0) {
     return rows[0];
   }
 
