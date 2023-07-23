@@ -6,6 +6,10 @@ export default defineConfig({
     coverage: {
       all: true,
       include: ["app/**"],
+      lines: 100,
+      functions: 100,
+      branches: 100,
+      statements: 100,
     },
     unstubEnvs: true,
     restoreMocks: true,
