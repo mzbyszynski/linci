@@ -1,0 +1,31 @@
+name: "Auth CI"
+
+on:
+  push:
+    paths:
+      - 'auth/**'
+
+permissions:
+  contents: read
+
+jobs:
+  test-auth:
+    name: Test Auth
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.3.x
+          cache: npm
+      
+      - name: Install
+        working-directory: ./auth
+        run: npm ci
+
+      - name: Test
+        working-directory: ./auth
+        run: npm run coverage
