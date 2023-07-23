@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 20.3.x
           cache: npm
-          working-directory: ./auth
+          cache-dependency_path: 'auth/package-lock.json'
       
       - name: Install
         working-directory: ./auth
