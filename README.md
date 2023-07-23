@@ -39,7 +39,8 @@ The reference application might also not _do_ that much since complex functional
     - [x] Add Postgres and flyway for db migrations
     - [x] Add backend graphql server using Kotlin and Spring Boot
     - [x] Working POC of automated tests for graphql server
-    - [ ] Add some kind of OAuth implementation to authenticate with third party and store some unique user identifier.
+    - [x] Add some kind of OAuth implementation to authenticate with third party and store some unique user identifier.
+    - [ ] Automate tests and coverage checks on sub projects
     - [ ] Create frontend using parts of EPIC stack.
     - [ ] Implement integration tests that test the whole stack
     - [ ] Add multi-tenancy concept to application as would be needed for typical SaaS.
