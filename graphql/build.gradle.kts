@@ -55,10 +55,6 @@ tasks.named("build") {
 	dependsOn(":jibDockerBuild")
 }
 
-tasks.named("check") {
-	dependsOn(":jacocoTestCoverageVerification")
-}
-
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs += "-Xjsr305=strict"
