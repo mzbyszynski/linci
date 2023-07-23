@@ -55,6 +55,10 @@ tasks.named("build") {
 	dependsOn(":jibDockerBuild")
 }
 
+tasks.named("check") {
+	dependsOn(":jacocoTestCoverageVerification")
+}
+
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs += "-Xjsr305=strict"
@@ -67,6 +71,25 @@ tasks.withType<Test> {
 }
 
 tasks.withType<JacocoReport> {
+	afterEvaluate {
+		classDirectories.setFrom(
+			files(classDirectories.files.map {
+				fileTree(it).apply {
+					exclude("**/GraphqlServerApplication**")
+				}
+			})
+		)
+	}
+}
+
+tasks.withType<JacocoCoverageVerification> {
+	violationRules {
+		rule {
+			limit {
+				minimum = "1.0".toBigDecimal()
+			}
+		}
+	}
 	afterEvaluate {
 		classDirectories.setFrom(
 			files(classDirectories.files.map {
