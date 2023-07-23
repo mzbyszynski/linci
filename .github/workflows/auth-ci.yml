@@ -3,6 +3,7 @@ name: "Auth CI"
 on:
   push:
     paths:
+      - '.github/workflows/auth-ci.yml'
       - 'auth/**'
 
 permissions:
@@ -21,6 +22,7 @@ jobs:
         with:
           node-version: 20.3.x
           cache: npm
+          working-directory: ./auth
       
       - name: Install
         working-directory: ./auth
