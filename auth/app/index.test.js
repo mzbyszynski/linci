@@ -20,6 +20,11 @@ beforeEach(() => {
 });
 
 describe("/login", () => {
+  test("responds to get requests with 404", async () => {
+    const response = await supertest(app).get("/login");
+    expect(response.status).toEqual(StatusCodes.NOT_FOUND);
+  });
+
   test("responds to valid requests with expected status code", async () => {
     const userData = {
       id: 123,
@@ -63,6 +68,11 @@ describe("/signup", () => {
     name: "Test User",
     password: "23rdsfs asdfsdafas",
   };
+
+  test("responds to get requests with 404", async () => {
+    const response = await supertest(app).get("/signup");
+    expect(response.status).toEqual(StatusCodes.NOT_FOUND);
+  });
 
   test("responds to valid requests with expected status code", async () => {
     pool.query.mockResolvedValue({
