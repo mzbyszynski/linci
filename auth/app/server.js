@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 import Router from "express-promise-router";
 import express from "express";
-import login from "./actions/login";
-import signup from "./actions/signup";
+import login from "./actions/login.js";
+import signup from "./actions/signup.js";
 
 dotenv.config();
 

@@ -1,6 +1,6 @@
-import { getUser } from "../db";
-import { generateTokens } from "../token";
-import { credentialsSchema } from "../schema";
+import { getUser } from "../db.js";
+import { generateTokens } from "../token.js";
+import { credentialsSchema } from "../schema.js";
 import { StatusCodes } from "http-status-codes";
 
 const login = async (req, res) => {

@@ -2,11 +2,13 @@
   "name": "auth-service",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "coverage": "vitest run --coverage",
     "test": "vitest",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "start": "node index.js"
   },
   "author": "",
   "license": "MIT",

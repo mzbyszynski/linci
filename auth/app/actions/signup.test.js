@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import pg from "pg";
 import { getMockReq, getMockRes } from "vitest-mock-express";
 import { StatusCodes } from "http-status-codes";
 import signup from "./signup";
@@ -6,7 +6,7 @@ import signup from "./signup";
 vi.mock("pg", () => {
   const Pool = vi.fn();
   Pool.prototype.query = vi.fn();
-  return { Pool };
+  return { default: { Pool } };
 });
 
 let pool;
@@ -18,7 +18,7 @@ const validInput = {
 };
 
 beforeEach(() => {
-  pool = new Pool();
+  pool = new pg.Pool();
   vi.stubEnv("ACCESS_TOKEN_KEY", "asdfsab");
   vi.stubEnv("REFRESH_TOKEN_KEY", "232223rwsfas");
   vi.stubEnv("ACCESS_TOKEN_EXPIRE", "5m");

@@ -1,18 +1,18 @@
-import { Pool } from "pg";
+import pg from "pg";
 import supertest from "supertest";
-import app from ".";
+import app from "./server";
 import { StatusCodes } from "http-status-codes";
 
 vi.mock("pg", () => {
   const Pool = vi.fn();
   Pool.prototype.query = vi.fn();
-  return { Pool };
+  return { default: { Pool } };
 });
 
 let pool;
 
 beforeEach(() => {
-  pool = new Pool();
+  pool = new pg.Pool();
   vi.stubEnv("ACCESS_TOKEN_KEY", "asdfsab");
   vi.stubEnv("REFRESH_TOKEN_KEY", "232223rwsfas");
   vi.stubEnv("ACCESS_TOKEN_EXPIRE", "5m");

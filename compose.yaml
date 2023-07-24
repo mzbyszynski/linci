@@ -29,3 +29,17 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST:-lincidb}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_DB: ${POSTGRES_DB:-linci}
+  auth:
+    image: node:20
+    user: "node"
+    working_dir: /home/node/auth
+    ports:
+      - "4001"
+    depends_on:
+      - lincidb-migrations
+    environment:
+      NODE_ENV: production
+      PORT: ${AUTH_PORT:-4001}
+    volumes:
+      - ./auth/:/home/node/auth/
+    command: npm start

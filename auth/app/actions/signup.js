@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
-import { userSchema } from "../schema";
-import { createUser } from "../db";
-import { generateTokens } from "../token";
+import { userSchema } from "../schema.js";
+import { createUser } from "../db.js";
+import { generateTokens } from "../token.js";
 
 const pgUniqueConstraintViolated = "23505";
 

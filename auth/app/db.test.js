@@ -1,17 +1,17 @@
-import { Pool } from "pg";
+import pg from "pg";
 import { createUser, getUser } from "./db";
 
 vi.mock("pg", () => {
   const Pool = vi.fn();
   Pool.prototype.query = vi.fn();
-  return { Pool };
+  return { default: { Pool } };
 });
 
 describe("getUser()", () => {
   let pool;
 
   beforeEach(() => {
-    pool = new Pool();
+    pool = new pg.Pool();
   });
 
   test("returns null when no rows are returned", async () => {
@@ -40,7 +40,7 @@ describe("createUser()", () => {
   let pool;
 
   beforeEach(() => {
-    pool = new Pool();
+    pool = new pg.Pool();
   });
 
   it("returns user data returned by query", async () => {
