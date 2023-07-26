@@ -2,17 +2,17 @@ import pg from "pg";
 
 const pool = new pg.Pool();
 
-const getUserSql = `
+const getPlayerSql = `
     select 
         id,
         name,
         email 
-    from user 
+    from player 
     where email = lower(trim($1))
     and password = crypt($2, trim(password))`;
 
-export const getUser = async ({ email, password }) => {
-  const { rows } = await pool.query(getUserSql, [email, password]);
+export const getPlayer = async ({ email, password }) => {
+  const { rows } = await pool.query(getPlayerSql, [email, password]);
   if (rows && rows.length > 0) {
     return rows[0];
   }
@@ -20,8 +20,8 @@ export const getUser = async ({ email, password }) => {
   return null;
 };
 
-const insertUserSql = `
-    insert into user
+const insertPlayerSql = `
+    insert into player
         (name, email, password)
     values 
         (
@@ -31,7 +31,7 @@ const insertUserSql = `
         )
     returning id, email, name`;
 
-export const createUser = async ({ email, name, password }) => {
-  const { rows } = await pool.query(insertUserSql, [name, email, password]);
+export const createPlayer = async ({ email, name, password }) => {
+  const { rows } = await pool.query(insertPlayerSql, [name, email, password]);
   return rows[0];
 };

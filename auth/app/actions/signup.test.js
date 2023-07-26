@@ -1,7 +1,9 @@
 import pg from "pg";
 import { getMockReq, getMockRes } from "vitest-mock-express";
 import { StatusCodes } from "http-status-codes";
+import mockFs from "mock-fs";
 import signup from "./signup";
+import { initializeKeystore } from "../keystore";
 
 vi.mock("pg", () => {
   const Pool = vi.fn();
@@ -17,12 +19,21 @@ const validInput = {
   password: "23rdsfs asdfsdafas",
 };
 
-beforeEach(() => {
+beforeEach(async () => {
   pool = new pg.Pool();
-  vi.stubEnv("ACCESS_TOKEN_KEY", "asdfsab");
-  vi.stubEnv("REFRESH_TOKEN_KEY", "232223rwsfas");
-  vi.stubEnv("ACCESS_TOKEN_EXPIRE", "5m");
-  vi.stubEnv("REFRESH_TOKEN_EXPIRE", "10m");
+  vi.stubEnv("ACCESS_TOKEN_EXPIRE_SECONDS", "300");
+  vi.stubEnv("REFRESH_TOKEN_EXPIRE_SECONDS", "600");
+  // For keystore
+  mockFs({
+    public: {
+      // Empty directory
+    },
+  });
+  await initializeKeystore();
+});
+
+afterEach(() => {
+  mockFs.restore();
 });
 
 test.each`
@@ -76,14 +87,14 @@ test("returns CREATED when signup is successful", async () => {
 });
 
 test("returns the expected payload when signup is successful", async () => {
-  const userData = {
+  const playerData = {
     id: 1324,
     email: validInput.email,
     name: validInput.name,
   };
 
   pool.query.mockResolvedValue({
-    rows: [userData],
+    rows: [playerData],
   });
 
   const { res } = getMockRes();
@@ -91,7 +102,7 @@ test("returns the expected payload when signup is successful", async () => {
   await signup(req, res);
 
   expect(res.json).toHaveBeenCalledWith({
-    ...userData,
+    ...playerData,
     accessToken: expect.any(String),
     refreshToken: expect.any(String),
   });

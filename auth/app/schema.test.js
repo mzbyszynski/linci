@@ -1,8 +1,8 @@
 import { describe } from "vitest";
-import { userSchema } from "./schema";
+import { playerSchema } from "./schema";
 
-describe("userSchema", () => {
-  const validUser = {
+describe("playerSchema", () => {
+  const validPlayer = {
     email: "user@example.com",
     name: "My Name is!",
     password: "SDFOIIJOmasd asdfas",
@@ -10,8 +10,8 @@ describe("userSchema", () => {
 
   describe("email", () => {
     test("fails invalid email", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         email: "invalid_email ",
       });
 
@@ -22,8 +22,8 @@ describe("userSchema", () => {
     });
 
     test("converts to lower case", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         email: "CAPS-USER@Example.Com",
       });
 
@@ -32,8 +32,8 @@ describe("userSchema", () => {
     });
 
     test("trims starting and trailing whitespace", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         email: `  space_user@example.com `,
       });
       expect(result).toHaveProperty("success", true);
@@ -43,8 +43,8 @@ describe("userSchema", () => {
 
   describe("name", () => {
     test("fail names shorter than 1 character", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         name: "",
       });
 
@@ -55,8 +55,8 @@ describe("userSchema", () => {
     });
 
     test("fail names shorter than 1 character excluding whitespace padding", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         name: "    ",
       });
 
@@ -67,8 +67,8 @@ describe("userSchema", () => {
     });
 
     test("trim leading and trailing whitespace", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         name: "  Az ",
       });
 
@@ -79,8 +79,8 @@ describe("userSchema", () => {
 
   describe("password", () => {
     test("fail passwords shorter than 8 characters", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         password: "test",
       });
 
@@ -91,8 +91,8 @@ describe("userSchema", () => {
     });
 
     test("not alter password", () => {
-      const result = userSchema.safeParse({
-        ...validUser,
+      const result = playerSchema.safeParse({
+        ...validPlayer,
         password: " test123 ",
       });
 

@@ -1,7 +1,9 @@
 import pg from "pg";
 import { getMockReq, getMockRes } from "vitest-mock-express";
+import mockFs from "mock-fs";
 import login from "./login";
 import { StatusCodes } from "http-status-codes";
+import { initializeKeystore } from "../keystore";
 
 vi.mock("pg", () => {
   const Pool = vi.fn();
@@ -11,12 +13,21 @@ vi.mock("pg", () => {
 
 let pool;
 
-beforeEach(() => {
+beforeEach(async () => {
   pool = new pg.Pool();
-  vi.stubEnv("ACCESS_TOKEN_KEY", "asdfsab");
-  vi.stubEnv("REFRESH_TOKEN_KEY", "232223rwsfas");
-  vi.stubEnv("ACCESS_TOKEN_EXPIRE", "5m");
-  vi.stubEnv("REFRESH_TOKEN_EXPIRE", "10m");
+  vi.stubEnv("ACCESS_TOKEN_EXPIRE", "300");
+  vi.stubEnv("REFRESH_TOKEN_EXPIRE", "600");
+  // For keystore
+  mockFs({
+    public: {
+      // Empty directory
+    },
+  });
+  await initializeKeystore();
+});
+
+afterEach(() => {
+  mockFs.restore();
 });
 
 test("returns BAD_REQUEST when password is not provided", async () => {

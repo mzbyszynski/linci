@@ -1,5 +1,5 @@
 import pg from "pg";
-import { createUser, getUser } from "./db";
+import { createPlayer, getPlayer } from "./db";
 
 vi.mock("pg", () => {
   const Pool = vi.fn();
@@ -7,7 +7,7 @@ vi.mock("pg", () => {
   return { default: { Pool } };
 });
 
-describe("getUser()", () => {
+describe("getPlayer()", () => {
   let pool;
 
   beforeEach(() => {
@@ -17,47 +17,47 @@ describe("getUser()", () => {
   test("returns null when no rows are returned", async () => {
     pool.query.mockResolvedValue({ rows: [] });
     expect(
-      getUser({ email: "user@example.com", password: "1234565423" }),
+      getPlayer({ email: "user@example.com", password: "1234565423" }),
     ).resolves.toBeNull();
   });
 
-  test("returns user returned from query", async () => {
-    const userData = {
+  test("returns player returned from query", async () => {
+    const playerData = {
       id: 123,
       name: "Test Name",
       email: "test_user@example.com",
     };
 
-    pool.query.mockResolvedValue({ rows: [userData] });
+    pool.query.mockResolvedValue({ rows: [playerData] });
 
     expect(
-      getUser({ email: userData.email, password: "2332234324r22" }),
-    ).resolves.toBe(userData);
+      getPlayer({ email: playerData.email, password: "2332234324r22" }),
+    ).resolves.toBe(playerData);
   });
 });
 
-describe("createUser()", () => {
+describe("createPlayer()", () => {
   let pool;
 
   beforeEach(() => {
     pool = new pg.Pool();
   });
 
-  it("returns user data returned by query", async () => {
-    const userData = {
+  it("returns player data returned by query", async () => {
+    const playerData = {
       id: 123,
       name: "Test Name",
       email: "test_user@example.com",
     };
 
-    pool.query.mockResolvedValue({ rows: [userData] });
+    pool.query.mockResolvedValue({ rows: [playerData] });
 
     expect(
-      createUser({
-        email: userData.email,
-        name: userData.name,
+      createPlayer({
+        email: playerData.email,
+        name: playerData.name,
         password: "2332234324r22",
       }),
-    ).resolves.toBe(userData);
+    ).resolves.toBe(playerData);
   });
 });

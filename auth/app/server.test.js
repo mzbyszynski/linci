@@ -1,7 +1,9 @@
 import pg from "pg";
 import supertest from "supertest";
-import app from "./server";
 import { StatusCodes } from "http-status-codes";
+import jose from "node-jose";
+import * as ks from "./keystore.js";
+import app from "./server";
 
 vi.mock("pg", () => {
   const Pool = vi.fn();
@@ -9,14 +11,19 @@ vi.mock("pg", () => {
   return { default: { Pool } };
 });
 
-let pool;
+vi.mock("./keystore.js");
 
-beforeEach(() => {
+let pool;
+const keystore = jose.JWK.createKeyStore();
+const key = await keystore.generate("RSA", 2048, {
+  alg: "RS256",
+  use: "sig",
+});
+
+beforeEach(async () => {
   pool = new pg.Pool();
-  vi.stubEnv("ACCESS_TOKEN_KEY", "asdfsab");
-  vi.stubEnv("REFRESH_TOKEN_KEY", "232223rwsfas");
-  vi.stubEnv("ACCESS_TOKEN_EXPIRE", "5m");
-  vi.stubEnv("REFRESH_TOKEN_EXPIRE", "10m");
+  vi.stubEnv("ACCESS_TOKEN_EXPIRE_SECONDS", "300");
+  vi.stubEnv("REFRESH_TOKEN_EXPIRE_SECONDS", "600");
 });
 
 describe("/login", () => {
@@ -26,28 +33,33 @@ describe("/login", () => {
   });
 
   test("responds to valid requests with expected status code", async () => {
-    const userData = {
+    const playerData = {
       id: 123,
       name: "Test Name",
       email: "user@example.com",
     };
-    pool.query.mockResolvedValue({ rows: [userData] });
+    pool.query.mockResolvedValue({ rows: [playerData] });
+    vi.spyOn(ks, "getKey").mockReturnValue(key);
 
-    const response = await supertest(app).post("/login").send({
-      email: "user@example.com",
-      password: "1231231231212",
-    });
-
+    const response = await supertest(app)
+      .post("/login")
+      .set("Content-Type", "application/json")
+      .send({
+        email: "user@example.com",
+        password: "1231231231212",
+      });
+    expect(ks.getKey).toHaveBeenCalled();
     expect(response.status).toEqual(StatusCodes.OK);
   });
 
   test("responds to valid requests with expected response body", async () => {
-    const userData = {
+    const playerData = {
       id: 123,
       name: "Test Name",
       email: "user@example.com",
     };
-    pool.query.mockResolvedValue({ rows: [userData] });
+    pool.query.mockResolvedValue({ rows: [playerData] });
+    vi.spyOn(ks, "getKey").mockReturnValue(key);
 
     const response = await supertest(app).post("/login").send({
       email: "user@example.com",
@@ -55,7 +67,7 @@ describe("/login", () => {
     });
 
     expect(response.body).toEqual({
-      ...userData,
+      ...playerData,
       accessToken: expect.any(String),
       refreshToken: expect.any(String),
     });
@@ -85,6 +97,8 @@ describe("/signup", () => {
       ],
     });
 
+    vi.spyOn(ks, "getKey").mockReturnValue(key);
+
     const response = await supertest(app)
       .post("/signup")
       .send({ ...validInput });
@@ -93,22 +107,24 @@ describe("/signup", () => {
   });
 
   test("responds to valid requests with expected body", async () => {
-    const userData = {
+    const playerData = {
       id: 1324,
       email: validInput.email,
       name: validInput.name,
     };
 
     pool.query.mockResolvedValue({
-      rows: [userData],
+      rows: [playerData],
     });
+
+    vi.spyOn(ks, "getKey").mockReturnValue(key);
 
     const response = await supertest(app)
       .post("/signup")
       .send({ ...validInput });
 
     expect(response.body).toEqual({
-      ...userData,
+      ...playerData,
       accessToken: expect.any(String),
       refreshToken: expect.any(String),
     });

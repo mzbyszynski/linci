@@ -1,19 +1,35 @@
+import { initializeKeystore } from "./keystore";
 import { generateTokens } from "./token";
+import mockFs from "mock-fs";
 
-const userId = 100;
+const playerId = 100;
 const email = "user@example.com";
 
 beforeEach(() => {
-  vi.stubEnv("ACCESS_TOKEN_KEY", "asdfsab");
-  vi.stubEnv("REFRESH_TOKEN_KEY", "232223rwsfas");
-  vi.stubEnv("ACCESS_TOKEN_EXPIRE", "5m");
-  vi.stubEnv("REFRESH_TOKEN_EXPIRE", "10m");
+  vi.stubEnv("ACCESS_TOKEN_EXPIRE_SECONDS", "300");
+  vi.stubEnv("REFRESH_TOKEN_EXPIRE_SECONDS", "600");
+  // For keystore
+  mockFs({
+    public: {
+      // Empty directory
+    },
+  });
 });
 
-test("generates access token", () => {
-  expect(generateTokens({ userId, email })).toHaveProperty("accessToken");
+afterEach(() => {
+  mockFs.restore();
 });
 
-test("generates refresh token", () => {
-  expect(generateTokens({ userId, email })).toHaveProperty("refreshToken");
+test("generates access token", async () => {
+  await initializeKeystore();
+  expect(generateTokens({ playerId, email })).resolves.toHaveProperty(
+    "accessToken",
+  );
+});
+
+test("generates refresh token", async () => {
+  await initializeKeystore();
+  expect(generateTokens({ playerId, email })).resolves.toHaveProperty(
+    "refreshToken",
+  );
 });

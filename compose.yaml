@@ -34,12 +34,17 @@ services:
     user: "node"
     working_dir: /home/node/auth
     ports:
-      - "4001"
+      - "4001:4001"
     depends_on:
       - lincidb-migrations
     environment:
       NODE_ENV: production
       PORT: ${AUTH_PORT:-4001}
+      PGHOST: lincidb
+      PGPORT: ${POSTGRES_PORT:-5432}
+      PGDATABASE: ${POSTGRES_DB:-linci}
+      PGUSER: ${POSTGRES_USER:-linciuser}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-changem3}
     volumes:
       - ./auth/:/home/node/auth/
     command: npm start
